@@ -17,9 +17,8 @@
         name: nginx 
         state: latest
 
-    ########################
-    # - CREATE Resources - #
-    ########################
+    # - CREATE Resources
+    
     - name: Create Nginx Backup Directory
       file:
         path: "{{ nginx_root }}/backup"
@@ -45,18 +44,14 @@
         - TEST ~ SSL Key File Creation
         - TEST ~ SSL Cert File Creation
 
-    ####################
-    # - BACKUP Items - #
-    ####################
+    # - BACKUP Items
     - name: Backup Original Nginx Conf
       command: "mv {{ nginx_root }}/nginx.conf {{ nginx_root }}/backup/nginx.conf"
 
     - name: Backup Original index.html
       command: "mv {{ doc_root }}/index.html {{ doc_root }}/backup/index.html"
 
-    ################################
-    # - INSTALL Custom Resources - #
-    ################################
+    # - INSTALL Custom Resources 
     - name: Install Custom index.html
       copy: 
         src: index.html
@@ -68,9 +63,7 @@
         dest: "{{ nginx_root }}/nginx.conf"
         validate: "nginx -t -c %s" # TEST - Validate Nginx Config
 
-    ################################
-    # - CONFIGURE Nginx Firewall - #
-    ################################
+    # - CONFIGURE Nginx Firewall 
     - name: Allow HTTPS Traffic
       ufw:
         rule: allow
@@ -82,9 +75,7 @@
         name: Nginx HTTP
         delete: yes
 
-    #######################################
-    # - RESTART Nginx & RUN Final Tests - #
-    #######################################
+    # - RESTART Nginx & RUN Final Tests
     - name: Restart Nginx
       service: 
         name: nginx 
@@ -103,9 +94,7 @@
     - debug:
         var: nginx_status
 
-  #############
-  # - TESTS - #
-  #############
+  # - TESTS
   handlers:
 
     # TEST FOR: Create Nginx Backup Directory
